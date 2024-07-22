@@ -4,14 +4,18 @@ import guru.springframework.domain.*;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private final CategoryRepository categoryRepository;
@@ -26,8 +30,17 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        recipeRepository.save(guacRecipe());
-        recipeRepository.save(tacosRecipe());
+//        recipeRepository.save(guacRecipe());
+//        recipeRepository.save(tacosRecipe());
+        recipeRepository.saveAll(loadRecipes());
+        log.debug("Loading bootstrap data");
+    }
+
+    private List<Recipe> loadRecipes() {
+        List<Recipe> recipes = new ArrayList<>();
+        recipes.add(guacRecipe());
+        recipes.add(tacosRecipe());
+        return recipes;
     }
 
     private Recipe guacRecipe() {
