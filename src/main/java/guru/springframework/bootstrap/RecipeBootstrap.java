@@ -30,8 +30,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-//        recipeRepository.save(guacRecipe());
-//        recipeRepository.save(tacosRecipe());
         recipeRepository.saveAll(loadRecipes());
         log.debug("Loading bootstrap data");
     }
@@ -39,7 +37,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private List<Recipe> loadRecipes() {
         List<Recipe> recipes = new ArrayList<>();
         recipes.add(guacRecipe());
-        recipes.add(tacosRecipe());
+        recipes.add(veganSpinachRecipe());
         return recipes;
     }
 
@@ -49,25 +47,22 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         guacRecipe.setPrepTime(10);
         guacRecipe.setCookTime(0);
         guacRecipe.setDifficulty(Difficulty.EASY);
-        guacRecipe.setDirections("1 Cut avocado, remove flesh: Cut the avocados in half. Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon" +
+        guacRecipe.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvoun5ws");
+        guacRecipe.setDirections("1. Cut avocado, remove flesh: Cut the avocados in half. Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon" +
                 "\n" +
-                "2 Mash with a fork: Using a fork, roughly mash the avocado. (Don't overdo it! The guacamole should be a little chunky.)" +
+                "2. Mash with a fork: Using a fork, roughly mash the avocado. (Don't overdo it! The guacamole should be a little chunky.)" +
                 "\n" +
-                "3 Add salt, lime juice, and the rest: Sprinkle with salt and lime (or lemon) juice. The acid in the lime juice will provide some balance to the richness of the avocado and will help delay the avocados from turning brown.\n" +
+                "3. Add salt, lime juice, and the rest: Sprinkle with salt and lime (or lemon) juice. The acid in the lime juice will provide some balance to the richness of the avocado and will help delay the avocados from turning brown.\n" +
                 "Add the chopped onion, cilantro, black pepper, and chiles. Chili peppers vary individually in their hotness. So, start with a half of one chili pepper and add to the guacamole to your desired degree of hotness.\n" +
                 "Remember that much of this is done to taste because of the variability in the fresh ingredients. Start with this recipe and adjust to your taste.\n" +
-                "4 Cover with plastic and chill to store: Place plastic wrap on the surface of the guacamole cover it and to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Refrigerate until ready to serve.\n" +
-                "Chilling tomatoes hurts their flavor, so if you want to add chopped tomato to your guacamole, add it just before serving.\n" +
-                "\n" +
-                "\n" +
-                "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvpiV9Sd");
+                "4. Cover with plastic and chill to store: Place plastic wrap on the surface of the guacamole cover it and to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Refrigerate until ready to serve.\n" +
+                "Chilling tomatoes hurts their flavor, so if you want to add chopped tomato to your guacamole, add it just before serving.");
 
         Notes guacNotes = new Notes();
         guacNotes.setRecipeNotes("For a very quick guacamole just take a 1/4 cup of salsa and mix it in with your mashed avocados.\n" +
                 "Feel free to experiment! One classic Mexican guacamole has pomegranate seeds and chunks of peaches in it (a Diana Kennedy favorite). Try guacamole with added pineapple, mango, or strawberries.\n" +
                 "The simplest version of guacamole is just mashed avocados with salt. Don't let the lack of availability of other ingredients stop you from making guacamole.\n" +
                 "To extend a limited supply of avocados, add either sour cream or cottage cheese to your guacamole dip. Purists may be horrified, but so what? It tastes great.\n" +
-                "\n" +
                 "\n" +
                 "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvoun5ws");
 
@@ -86,80 +81,67 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
                 createIngredient("ripe tomato, seeds and pulp removed, chopped", new BigDecimal(".5"), getUom("Each"), guacRecipe)
         ));
 
-        guacRecipe.getCategories().add(getCategory("American"));
         guacRecipe.getCategories().add(getCategory("Mexican"));
 
-        guacRecipe.setUrl("http://www.simplyrecipes.com/recipes/perfect_guacamole/");
         guacRecipe.setServings(4);
         guacRecipe.setSource("Simply Recipes");
 
         return guacRecipe;
     }
 
-    private Recipe tacosRecipe() {
+    private Recipe veganSpinachRecipe() {
         //Yummy Tacos
-        Recipe tacosRecipe = new Recipe();
-        tacosRecipe.setDescription("Spicy Grilled Chicken Taco");
-        tacosRecipe.setCookTime(9);
-        tacosRecipe.setPrepTime(20);
-        tacosRecipe.setDifficulty(Difficulty.MODERATE);
+        Recipe veganSpinachRecipe = new Recipe();
+        veganSpinachRecipe.setDescription("Vegan Creamed Spinach");
+        veganSpinachRecipe.setCookTime(8);
+        veganSpinachRecipe.setPrepTime(20);
+        veganSpinachRecipe.setUrl("https://www.simplyrecipes.com/vegan-creamed-spinach-recipe-6748375");
+        veganSpinachRecipe.setDifficulty(Difficulty.MODERATE);
 
-        tacosRecipe.setDirections("1 Prepare a gas or charcoal grill for medium-high, direct heat.\n" +
-                "2 Make the marinade and coat the chicken: In a large bowl, stir together the chili powder, oregano, cumin, sugar, salt, garlic and orange zest. Stir in the orange juice and olive oil to make a loose paste. Add the chicken to the bowl and toss to coat all over.\n" +
-                "Set aside to marinate while the grill heats and you prepare the rest of the toppings.\n" +
+        veganSpinachRecipe.setDirections("1. Soak the cashews:\n" +
+                "In a small bowl, pour the oat milk and water over the cashews, ensuring they are submerged. Soak for at least 1 hour or up to 12 hours (refrigerate if soaking for longer than an hour or so).\n" +
+                "2. Make the sauce:\n" +
+                "Transfer the soaked cashews and soaking liquid to a blender along with 2 tablespoons lemon juice and the salt, black pepper, and nutmeg (if using). Purée until smooth.\n" +
+                "3. Wash and wilt the spinach:\n" +
+                "Wash the spinach and drain in a colander. Don’t spin dry (you want some water clinging to the spinach).\n" +
+                "Heat a large skillet over medium-high heat. Add half the spinach and use tongs to turn it in the pan until wilted. This will take just a minute or two. Transfer to a bowl. Repeat with remaining spinach.\n" +
+                "4. Squeeze and chop the spinach:\n" +
+                "When cool enough to handle, take up handfuls of spinach and squeeze out as much of the liquid as possible. Be aggressive here.\n" +
+                "Set the squeezed-out spinach on a cutting board and roughly chop.\n" +
+                "5. Sauté the shallots, garlic, and spinach:\n" +
+                "Heat the olive oil in the same large skillet over medium-high heat. Add the shallots and sauté until tender and translucent, about 5 minutes. Add the garlic and sauté for 30 seconds, making sure it doesn’t brown. Add the spinach and stir just until warm.\n" +
+                "6. Add the sauce:\n" +
+                "Pour the cashew cream sauce over the spinach and stir well to blend. Taste and add more lemon juice and/or salt as desired. Serve warm.\n" +
+                "Store leftover creamed spinach in an airtight container in the fridge for up to 3 days.");
+        Notes veganSpinachNotes = new Notes();
+        veganSpinachNotes.setRecipeNotes("You'll get the best results if you use fresh spinach sold in bunches, which means washing and stemming the greens. If you need a good shortcut, use frozen spinach instead.\n" +
+                "You can easily double or even triple the recipe. You will have to cook the spinach in several batches and may find you don't need all the cream sauce. Save any extra to enjoy the next day tossed with pasta and a shower of vegan Parmesan cheese. Consider it vegan alfredo!\n" +
                 "\n" +
-                "\n" +
-                "3 Grill the chicken: Grill the chicken for 3 to 4 minutes per side, or until a thermometer inserted into the thickest part of the meat registers 165F. Transfer to a plate and rest for 5 minutes.\n" +
-                "4 Warm the tortillas: Place each tortilla on the grill or on a hot, dry skillet over medium-high heat. As soon as you see pockets of the air start to puff up in the tortilla, turn it with tongs and heat for a few seconds on the other side.\n" +
-                "Wrap warmed tortillas in a tea towel to keep them warm until serving.\n" +
-                "5 Assemble the tacos: Slice the chicken into strips. On each tortilla, place a small handful of arugula. Top with chicken slices, sliced avocado, radishes, tomatoes, and onion slices. Drizzle with the thinned sour cream. Serve with lime wedges.\n" +
-                "\n" +
-                "\n" +
-                "Read more: http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/#ixzz4jvtrAnNm");
+                "Read more: https://www.simplyrecipes.com/vegan-creamed-spinach-recipe-6748375");
 
-        Notes tacoNotes = new Notes();
-        tacoNotes.setRecipeNotes("We have a family motto and it is this: Everything goes better in a tortilla.\n" +
-                "Any and every kind of leftover can go inside a warm tortilla, usually with a healthy dose of pickled jalapenos. I can always sniff out a late-night snacker when the aroma of tortillas heating in a hot pan on the stove comes wafting through the house.\n" +
-                "Today’s tacos are more purposeful – a deliberate meal instead of a secretive midnight snack!\n" +
-                "First, I marinate the chicken briefly in a spicy paste of ancho chile powder, oregano, cumin, and sweet orange juice while the grill is heating. You can also use this time to prepare the taco toppings.\n" +
-                "Grill the chicken, then let it rest while you warm the tortillas. Now you are ready to assemble the tacos and dig in. The whole meal comes together in about 30 minutes!\n" +
-                "\n" +
-                "\n" +
-                "Read more: http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/#ixzz4jvu7Q0MJ");
+        veganSpinachRecipe.setNotes(veganSpinachNotes);
 
-        tacosRecipe.setNotes(tacoNotes);
+        veganSpinachNotes.setRecipe(veganSpinachRecipe);
+        veganSpinachRecipe.setIngredients(Set.of(
+                createIngredient("Oat milk (or unsweetened nut milk)", new BigDecimal(1), getUom("Cup"), veganSpinachRecipe),
+                createIngredient("Water", new BigDecimal(.25), getUom("Cup"), veganSpinachRecipe),
+                createIngredient("Raw, unsalted cashews", new BigDecimal(1), getUom("Cup"), veganSpinachRecipe),
+                createIngredient("Lemon juice", new BigDecimal(3), getUom("Tablespoon"), veganSpinachRecipe),
+                createIngredient("Kosher salt", new BigDecimal("1"), getUom("Teaspoon"), veganSpinachRecipe),
+                createIngredient("Freshly ground black pepper", new BigDecimal(.5), getUom("Teaspoon"), veganSpinachRecipe),
+                createIngredient("Ground nutmeg", new BigDecimal(1), getUom("Pinch"), veganSpinachRecipe),
+                createIngredient("Fresh spinach", new BigDecimal(2.5), getUom("Pound"), veganSpinachRecipe),
+                createIngredient("Extra-virgin olive oil", new BigDecimal(1), getUom("Tablespoon"), veganSpinachRecipe),
+                createIngredient("Diced shallot", new BigDecimal(".5"), getUom("Cup"), veganSpinachRecipe),
+                createIngredient("Clove garlic, minced", new BigDecimal(1), getUom("Piece"), veganSpinachRecipe)
+                ));
 
-        tacoNotes.setRecipe(tacosRecipe);
-        tacosRecipe.setIngredients(Set.of(
-                createIngredient("Ancho Chili Powder", new BigDecimal(2), getUom("Tablespoon"), tacosRecipe),
-                createIngredient("Dried Oregano", new BigDecimal(1), getUom("Teaspoon"), tacosRecipe),
-                createIngredient("Dried Cumin", new BigDecimal(1), getUom("Teaspoon"), tacosRecipe),
-                createIngredient("Sugar", new BigDecimal(1), getUom("Teaspoon"), tacosRecipe),
-                createIngredient("Salt", new BigDecimal(".5"), getUom("Teaspoon"), tacosRecipe),
-                createIngredient("Clove of Garlic, Choppedr", new BigDecimal(1), getUom("Each"), tacosRecipe),
-                createIngredient("finely grated orange zestr", new BigDecimal(1), getUom("Tablespoon"), tacosRecipe),
-                createIngredient("fresh-squeezed orange juice", new BigDecimal(3), getUom("Tablespoon"), tacosRecipe),
-                createIngredient("Olive Oil", new BigDecimal(2), getUom("Tablespoon"), tacosRecipe),
-                createIngredient("boneless chicken thighs", new BigDecimal(4), getUom("Tablespoon"), tacosRecipe),
-                createIngredient("small corn tortillasr", new BigDecimal(8), getUom("Each"), tacosRecipe),
-                createIngredient("packed baby arugula", new BigDecimal(3), getUom("Cup"),tacosRecipe),
-                createIngredient("medium ripe avocados, slic", new BigDecimal(2), getUom("Each"), tacosRecipe),
-                createIngredient("radishes, thinly sliced", new BigDecimal(4), getUom("Each"), tacosRecipe),
-                createIngredient("cherry tomatoes, halved", new BigDecimal(".5"), getUom("Pint"), tacosRecipe),
-                createIngredient("red onion, thinly sliced", new BigDecimal(".25"), getUom("Each"), tacosRecipe),
-                createIngredient("Roughly chopped cilantro", new BigDecimal(4), getUom("Each"), tacosRecipe),
-                createIngredient("cup sour cream thinned with 1/4 cup milk", new BigDecimal(4), getUom("Cup"), tacosRecipe),
-                createIngredient("lime, cut into wedges", new BigDecimal(4), getUom("Each"), tacosRecipe)
-        ));
+        veganSpinachRecipe.getCategories().add(getCategory("Vegan"));
 
-        tacosRecipe.getCategories().add(getCategory("American"));
-        tacosRecipe.getCategories().add(getCategory("Mexican"));
+        veganSpinachRecipe.setServings(4);
+        veganSpinachRecipe.setSource("Simply Recipes");
 
-        tacosRecipe.setUrl("http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/");
-        tacosRecipe.setServings(4);
-        tacosRecipe.setSource("Simply Recipes");
-
-        return tacosRecipe;
+        return veganSpinachRecipe;
     }
 
     private Ingredient createIngredient(String description, BigDecimal amount, UnitOfMeasure uom, Recipe recipe) {
