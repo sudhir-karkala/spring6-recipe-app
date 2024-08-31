@@ -81,6 +81,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
                 createIngredient("ripe tomato, seeds and pulp removed, chopped", new BigDecimal(".5"), getUom("Each"), guacRecipe)
         ));
 
+        guacRecipe.getIngredients().forEach(ingredient -> ingredient.setRecipe(guacRecipe));
+
         guacRecipe.getCategories().add(getCategory("Mexican"));
 
         guacRecipe.setServings(4);
@@ -135,6 +137,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
                 createIngredient("Diced shallot", new BigDecimal(".5"), getUom("Cup"), veganSpinachRecipe),
                 createIngredient("Clove garlic, minced", new BigDecimal(1), getUom("Piece"), veganSpinachRecipe)
                 ));
+
+        veganSpinachRecipe.getIngredients().forEach(ingredient -> ingredient.setRecipe(veganSpinachRecipe));
 
         veganSpinachRecipe.getCategories().add(getCategory("Vegan"));
 
