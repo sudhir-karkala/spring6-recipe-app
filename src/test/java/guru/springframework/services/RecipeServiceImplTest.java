@@ -1,5 +1,6 @@
 package guru.springframework.services;
 
+import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converters.RecipeCommandToRecipe;
 import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
@@ -50,6 +51,26 @@ class RecipeServiceImplTest {
     }
 
     @Test
+    public void getRecipeCommandByIdTest() {
+        //given
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe> optionalRecipe = Optional.of(recipe);
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+        when(recipeRepository.findById(anyLong())).thenReturn(optionalRecipe);
+        when(recipeToRecipeCommand.convert(recipe)).thenReturn(recipeCommand);
+
+        //when
+        RecipeCommand returnedRecipeCommand = recipeService.findCommandById(1L);
+
+        //then
+        assertNotNull(returnedRecipeCommand, "Null RecipeCommand returned");
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeToRecipeCommand, times(1)).convert(any());
+    }
+
+    @Test
     public void getRecipeByIdTest() {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
@@ -62,6 +83,19 @@ class RecipeServiceImplTest {
         assertNotNull(returnedRecipe, "Null recipe returned");
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
+    }
+
+    @Test
+    public void testDeleteRecipeById() {
+        //given
+        Long id = 1L;
+
+        //when
+        recipeService.deleteById(id);
+        //no 'when', since method has void return type
+
+        //then
+        verify(recipeRepository, times(1)).deleteById(anyLong());
     }
 
     @AfterEach

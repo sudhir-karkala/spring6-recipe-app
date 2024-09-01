@@ -24,10 +24,13 @@ class RecipeControllerTest {
 
     AutoCloseable autoCloseable;
 
+    MockMvc mockMvc;
+
     @BeforeEach
     public void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         recipeController = new RecipeController(recipeService);
+        mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
     }
 
     @Test
@@ -35,7 +38,6 @@ class RecipeControllerTest {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
         when(recipeService.findById(1L)).thenReturn(recipe);
 
         mockMvc.perform(get("/recipe/1/show"))
@@ -50,7 +52,6 @@ class RecipeControllerTest {
         RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(1L);
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
         when(recipeService.findCommandById(1L)).thenReturn(recipeCommand);
 
         mockMvc.perform(get("/recipe/1/update"))
@@ -61,11 +62,18 @@ class RecipeControllerTest {
     }
 
     @Test
+    void testDeleteRecipe() throws Exception {
+        mockMvc.perform(get("/recipe/1/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
+        verify(recipeService, times(1)).deleteById(anyLong());
+    }
+
+    @Test
     void testPostNewRecipeForm() throws Exception {
         RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(1L);
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
         when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
 
         mockMvc.perform(post("/recipe")
@@ -80,7 +88,6 @@ class RecipeControllerTest {
         RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(1L);
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
         when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
 
         mockMvc.perform(get("/recipe/new"))
