@@ -12,7 +12,7 @@
 
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-6 mx-auto">
             <form  th:object="${recipe}" th:action="@{/recipe}" method="post">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="card">

@@ -9,32 +9,34 @@
 </head>
 <body>
 <div class="card">
-    <div class="card-header bg-primary text-white text-center">
-        <h2>My Recipes</h2>
-    </div>
-    <div class="card-body">
-        <table class="table table-striped table-hover">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Description</th>
-                <th>View</th>
-                <th>Update</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="recipe : ${recipes}">
-                <td th:text="${recipe.id}">123</td>
-                <td th:text="${recipe.description}">Tasty Goodness</td>
-                <!-- href="#" is a static href attribute in our template, so that our template links remained navigable by a browser when opened directly-->
-                <!-- Clicking an anchor with href="#" will move the scroll position to the top-->
-                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/show'}">View</a></td>
-                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/update'}">Update</a></td>
-                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/delete'}">Delete</a></td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="col-6 mx-auto">
+        <div class="card-header bg-primary text-white text-center">
+            <h2>My Recipes</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>View</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="recipe : ${recipes}">
+                    <td th:text="${recipe.id}">123</td>
+                    <td th:text="${recipe.description}">Tasty Goodness</td>
+                    <!-- href="#" is a static href attribute in our template, so that our template links remained navigable by a browser when opened directly-->
+                    <!-- Clicking an anchor with href="#" will move the scroll position to the top-->
+                    <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/show'}">View</a></td>
+                    <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/update'}">Update</a></td>
+                    <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/delete'}">Delete</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </body>
