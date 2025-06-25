@@ -85,7 +85,14 @@
             <!-- A card for Ingredients -->
             <div class="card mx-auto">
                 <div class="card-header">
-                    <h3>Ingredients</h3>
+                    <div class="row">
+                        <div class="col-11">
+                            <h3>Ingredients</h3>
+                        </div>
+                        <div class="col-1">
+                            <a class="btn btn-default" href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredients'}" role="button">View</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
