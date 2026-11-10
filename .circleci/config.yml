@@ -23,7 +23,7 @@ jobs:
       # Build the application and run unit and integration tests.
       - run:
           name: Build and test
-          command: bash ./mvnw -B clean verify
+          command: ./mvnw -B clean verify
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
