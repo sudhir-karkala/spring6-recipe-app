@@ -3,6 +3,7 @@ package guru.springframework.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
@@ -21,5 +22,6 @@ public class Ingredient {
     private UnitOfMeasure uom;
 
     @ManyToOne
+    @ToString.Exclude
     private Recipe recipe;
 }

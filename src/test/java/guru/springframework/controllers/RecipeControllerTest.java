@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Set;
+
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -29,6 +31,7 @@ class RecipeControllerTest {
     @BeforeEach
     public void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
+        when(recipeService.getCategories()).thenReturn(Set.of());
         recipeController = new RecipeController(recipeService);
         mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
     }
@@ -57,16 +60,23 @@ class RecipeControllerTest {
         mockMvc.perform(get("/recipe/1/update"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/recipeform"))
-                .andExpect(model().attributeExists("recipe"));
+                .andExpect(model().attributeExists("recipe", "categories"));
 
     }
 
     @Test
     void testDeleteRecipe() throws Exception {
-        mockMvc.perform(get("/recipe/1/delete"))
+        mockMvc.perform(post("/recipe/1/delete"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
         verify(recipeService, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    void testDeleteRecipeDoesNotAcceptGet() throws Exception {
+        mockMvc.perform(get("/recipe/1/delete"))
+                .andExpect(status().isMethodNotAllowed());
+        verify(recipeService, never()).deleteById(anyLong());
     }
 
     @Test
@@ -93,7 +103,7 @@ class RecipeControllerTest {
         mockMvc.perform(get("/recipe/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/recipeform"))
-                .andExpect(model().attributeExists("recipe"));
+                .andExpect(model().attributeExists("recipe", "categories"));
 
     }
 }

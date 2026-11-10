@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ingredient</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <div class="card mx-auto" style="max-width: 40rem">
+        <div class="card-header bg-primary text-white">
+            <h1 class="h3 mb-0">Ingredient</h1>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Description</dt>
+                <dd class="col-sm-8" th:text="${ingredient.description}">Ingredient description</dd>
+                <dt class="col-sm-4">Amount</dt>
+                <dd class="col-sm-8" th:text="${ingredient.amount} + ' ' + ${ingredient.uom.description}">1 Cup</dd>
+            </dl>
+            <div class="mt-3">
+                <a class="btn btn-primary"
+                   th:href="@{/recipe/{recipeId}/ingredient/{ingredientId}/update(recipeId=${recipeId}, ingredientId=${ingredient.id})}">Edit</a>
+                <a class="btn btn-secondary" th:href="@{/recipe/{id}/ingredients(id=${recipeId})}">Back to ingredients</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

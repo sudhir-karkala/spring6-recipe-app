@@ -14,6 +14,7 @@ public class Category {
     private Long id;
     private String description;
     @ManyToMany(mappedBy = "categories")
+    @ToString.Exclude
     private Set<Recipe> recipes;
 
 }

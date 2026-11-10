@@ -16,50 +16,41 @@
             <div class="card">
                 <div class="card-header bg-primary">
                     <div class="row">
-                        <h1 class="text-center text-white">Ingredients</h1>
+                        <h1 class="text-center text-white" th:text="'Ingredients - ' + ${recipe.description}">Ingredients</h1>
                     </div>
                 </div>
 
                 <div class="card-body">
-                    <!-- Recipe Description -->
-                    <div class="table-responsive" th:if="${not #lists.isEmpty(recipe.ingredients)}">
+                    <p th:if="${#lists.isEmpty(recipe.ingredients)}">This recipe has no ingredients.</p>
+                    <div class="table-responsive" th:unless="${#lists.isEmpty(recipe.ingredients)}">
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <td>ID</td>
-                                <td>Description</td>
-                                <td>View</td>
-                                <td>Update</td>
-                                <td>Delete</td>
+                                <th>ID</th>
+                                <th>Ingredient</th>
+                                <th>View</th>
+                                <th>Update</th>
+                                <th>Delete</th>
                             </tr>
                             </thead>
-                            <tr th:remove="all">
-                                <td>123</td>
-                                <td>Tasty Goodness-1</td>
-                                <td><a href="#">View</a></td>
-                                <td><a href="#">Update</a></td>
-                                <td><a href="#">Delete</a></td>
-                            </tr>
-                            <tr th:remove="all">
-                                <td>456</td>
-                                <td>Tasty Goodness-2</td>
-                                <td><a href="#">View</a></td>
-                                <td><a href="#">Update</a></td>
-                                <td><a href="#">Delete</a></td>
-                            </tr>
                             <tr th:each="ingredient : ${recipe.ingredients}">
                                 <td th:text="${ingredient.id}">334</td>
-                                <td th:text="${ingredient.amount} + ' ' + ${ingredient.uom.description} + ' ' + ${ingredient.description}">Tasty Goodness-3</td>
-                                <td>show ingredient</td>
-                                <td>update ingredient</td>
-                                <td>delete ingredient</td>
-                                <!-- TODO: implement show, update and delete ingredient -->
-<!--                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredient/' + ${ingredient.id} + '/show">View</a></td>-->
-<!--                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredient/' + ${ingredient.id} + '/update">Update</a></td>-->
-<!--                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredient/' + ${ingredient.id} + '/delete">Delete</a></td>-->
+                                <td th:text="${ingredient.amount} + ' ' + ${ingredient.uom.description} + ' ' + ${ingredient.description}">1 Cup Milk</td>
+                                <td><a th:href="@{/recipe/{recipeId}/ingredient/{ingredientId}/show(recipeId=${recipe.id}, ingredientId=${ingredient.id})}">View</a></td>
+                                <td><a th:href="@{/recipe/{recipeId}/ingredient/{ingredientId}/update(recipeId=${recipe.id}, ingredientId=${ingredient.id})}">Update</a></td>
+                                <td>
+                                    <form th:action="@{/recipe/{recipeId}/ingredient/{ingredientId}/delete(recipeId=${recipe.id}, ingredientId=${ingredient.id})}"
+                                          method="post">
+                                        <button class="btn btn-link p-0" type="submit">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         </table>
-                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mt-3">
+                        <a class="btn btn-primary"
+                           th:href="@{/recipe/{recipeId}/ingredient/new(recipeId=${recipe.id})}">Add Ingredient</a>
+                        <a class="btn btn-secondary" th:href="@{/recipe/{id}/show(id=${recipe.id})}">Back to recipe</a>
                     </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@ package guru.springframework.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +16,11 @@ public class Recipe {
 
     private String description;
     private Integer prepTime;
+    @Enumerated(EnumType.STRING)
+    private TimeUnit prepTimeUnit = TimeUnit.MINUTES;
     private Integer cookTime;
+    @Enumerated(EnumType.STRING)
+    private TimeUnit cookTimeUnit = TimeUnit.MINUTES;
     private Integer servings;
     private String source;
     private String url;
@@ -31,12 +36,15 @@ public class Recipe {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "notes_id")
+    @ToString.Exclude
     private Notes notes;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    @ToString.Exclude
     private Set<Ingredient> ingredients = new HashSet<>();
 
     @ManyToMany
+    @ToString.Exclude
     @JoinTable(name = "recipe_category",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
@@ -50,5 +58,13 @@ public class Recipe {
     public void addIngredient(Ingredient ingredient) {
         ingredient.setRecipe(this);
         ingredients.add(ingredient);
+    }
+
+    public TimeUnit getPrepTimeUnit() {
+        return prepTimeUnit == null ? TimeUnit.MINUTES : prepTimeUnit;
+    }
+
+    public TimeUnit getCookTimeUnit() {
+        return cookTimeUnit == null ? TimeUnit.MINUTES : cookTimeUnit;
     }
 }

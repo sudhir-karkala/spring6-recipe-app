@@ -3,7 +3,9 @@ package guru.springframework.services;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converters.RecipeCommandToRecipe;
 import guru.springframework.converters.RecipeToRecipeCommand;
+import guru.springframework.domain.Category;
 import guru.springframework.domain.Recipe;
+import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +25,8 @@ class RecipeServiceImplTest {
 
     @Mock
     private RecipeRepository recipeRepository;
+    @Mock
+    private CategoryRepository categoryRepository;
 
     private AutoCloseable autoCloseable;
 
@@ -35,7 +39,8 @@ class RecipeServiceImplTest {
     @BeforeEach
     public void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
+        recipeService = new RecipeServiceImpl(
+                recipeRepository, categoryRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
@@ -48,6 +53,33 @@ class RecipeServiceImplTest {
         assertEquals(recipes.size(), 1);
         verify(recipeRepository, times(1)).findAll();
         verify(recipeRepository, never()).findById(anyLong());
+    }
+
+    @Test
+    public void getCategories() {
+        Category category = new Category();
+        when(categoryRepository.findAll()).thenReturn(Set.of(category));
+
+        assertEquals(Set.of(category), recipeService.getCategories());
+    }
+
+    @Test
+    public void saveRecipeResolvesSelectedCategoriesFromRepository() {
+        RecipeCommand command = new RecipeCommand();
+        command.setCategoryIds(Set.of(5L));
+        Recipe recipe = new Recipe();
+        Category category = new Category();
+        category.setId(5L);
+        RecipeCommand expected = new RecipeCommand();
+
+        when(recipeCommandToRecipe.convert(command)).thenReturn(recipe);
+        when(categoryRepository.findById(5L)).thenReturn(Optional.of(category));
+        when(recipeRepository.save(recipe)).thenReturn(recipe);
+        when(recipeToRecipeCommand.convert(recipe)).thenReturn(expected);
+
+        assertSame(expected, recipeService.saveRecipeCommand(command));
+
+        assertEquals(Set.of(category), recipe.getCategories());
     }
 
     @Test
