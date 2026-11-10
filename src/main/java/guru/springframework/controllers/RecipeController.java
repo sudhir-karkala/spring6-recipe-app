@@ -5,7 +5,10 @@ import guru.springframework.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Slf4j
 @Controller
@@ -16,26 +19,26 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @RequestMapping(value = "/recipe/{id}/show", method = RequestMethod.GET)
-    public String showById(@PathVariable String id, Model model) {
-        model.addAttribute("recipe", recipeService.findById(Long.valueOf(id)));
+    @GetMapping("/recipe/{id}/show")
+    public String showById(@PathVariable Long id, Model model) {
+        model.addAttribute("recipe", recipeService.findById(id));
         return "recipe/show";
     }
 
-    @RequestMapping(value = "/recipe/new", method = RequestMethod.GET)
+    @GetMapping("/recipe/new")
     public String newRecipe(Model model) {
         model.addAttribute("recipe", new RecipeCommand());
         model.addAttribute("categories", recipeService.getCategories());
         return "recipe/recipeform";
     }
 
-    @RequestMapping(value = "/recipe", method = RequestMethod.POST)
+    @PostMapping("/recipe")
     public String saveRecipe(@ModelAttribute RecipeCommand recipeCommand) {
         RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(recipeCommand);
         return "redirect:/recipe/" + savedRecipeCommand.getId() + "/show";
     }
 
-    @RequestMapping(value = "/recipe/{id}/update", method = RequestMethod.GET)
+    @GetMapping("/recipe/{id}/update")
     public String updateRecipe(@PathVariable Long id, Model model) {
         model.addAttribute("recipe", recipeService.findCommandById(id));
         model.addAttribute("categories", recipeService.getCategories());
